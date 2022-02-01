@@ -1,10 +1,12 @@
 require('dotenv').config();
 const { Sequelize } = require('sequelize');
 const fs = require('fs');
+const axios = require ('axios');
 const path = require('path');
 const {
-  DB_USER, DB_PASSWORD, DB_HOST,
+  DB_USER, DB_PASSWORD, DB_HOST, 
 } = process.env;
+
 
 const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/food`, {
   logging: false, // set to console.log to see the raw SQL queries
@@ -30,10 +32,27 @@ sequelize.models = Object.fromEntries(capsEntries);
 
 // En sequelize.models están todos los modelos importados como propiedades
 // Para relacionarlos hacemos un destructuring
-const { Recipe } = sequelize.models;
+const { Recipe, Diet  } = sequelize.models;
 
 // Aca vendrian las relaciones
 // Product.hasMany(Reviews);
+Diet.belongsToMany(Recipe, { through: "diet_recipe" });
+Recipe.belongsToMany(Diet, { through: "diet_recipe" });
+
+
+//SPOONACULAR_API_KEY->expor process.env
+//axios.get('https://api.spoonacular.com/recipes/complexSearch?apiKey=' + SPOONACULAR_API_KEY)
+  //.then(function (response) {
+    // handle success
+    //console.log(response.data.results);
+  //})
+  //.catch(function (error) {
+    // handle error
+    //console.log(error);
+  //})
+  //.then(function () {
+    // always executed
+  //});
 
 module.exports = {
   ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
