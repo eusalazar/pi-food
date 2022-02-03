@@ -40,19 +40,7 @@ Diet.belongsToMany(Recipe, { through: "diet_recipe" });
 Recipe.belongsToMany(Diet, { through: "diet_recipe" });
 
 
-//SPOONACULAR_API_KEY->expor process.env
-//axios.get('https://api.spoonacular.com/recipes/complexSearch?apiKey=' + SPOONACULAR_API_KEY)
-  //.then(function (response) {
-    // handle success
-    //console.log(response.data.results);
-  //})
-  //.catch(function (error) {
-    // handle error
-    //console.log(error);
-  //})
-  //.then(function () {
-    // always executed
-  //});
+
 
 module.exports = {
   ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
