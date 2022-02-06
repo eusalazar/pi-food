@@ -40,8 +40,12 @@ Diet.belongsToMany(Recipe, { through: "diet_recipe" });
 Recipe.belongsToMany(Diet, { through: "diet_recipe" });
 
 
-
-
+const typeDiet = [{name: 'Gluten Free'}, {name: 'Ketogenic'}, {name: 'Lacto-Vegetarian'}, {name: 'Ovo-Vegetarian'}, {name: 'Vegan'}, {name: 'Pescetarian'}, {name: 'Paleo'}, {name: 'Primal'}, {name: 'Low FODMAP'}, {name: 'Whole30'}]
+typeDiet.map((e) => {
+  Diet.findOrCreate({
+    where: e
+  })
+})
 module.exports = {
   ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
   conn: sequelize,     // para importart la conexión { conn } = require('./db.js');

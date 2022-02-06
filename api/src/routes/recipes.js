@@ -10,8 +10,8 @@ const router = Router();
 
 const getApi = async () =>{ //llamamos al endpind de la api_traigo esta info de la api
     const path = 'recipes/complexSearch';
-    const params = `number=30&addRecipeInformation=true&apiKey=${SPOONACULAR_API_KEY}`;
-    const apiUrl = `${BASE_URL}/${path}+${params}`;
+    const params = `number=50&addRecipeInformation=true&apiKey=${SPOONACULAR_API_KEY}`;
+    const apiUrl = `${BASE_URL}/${path}?${params}`;
     const rawData = await axios.get(apiUrl);  //data limpia
     const parseReceipt = (r) => ({////creo quna fn y le paso r como parametro
         id: r.id,                //unifica la forma de acceder a la info
@@ -64,6 +64,64 @@ router.get('/recipes', async (req, res) =>{ //el query ?name(atributo)...(y lo q
         res.status(200).send(recipes);
     }
 });
+
+
+
+const getApiById = async (numId) =>{
+    const path = `recipes/${numId}/information`;
+    const params = `apiKey=${SPOONACULAR_API_KEY}`;
+    const apiUrl = `${BASE_URL}/${path}?${params}`;
+    const rawData = await axios.get(apiUrl);
+    const {
+        id,
+        title,
+        image,
+        dishTypes,
+        diets,
+        summary,
+        spoonacularScore,
+        healthScore,
+        instructions,
+    } = await rawData.data;
+    const recipeData = {
+        id,
+        name: title,
+        img: image,
+        type: dishTypes,
+        diets,
+        summary,
+        score: spoonacularScore,
+        healthScore,
+        steps: instructions,
+      };
+    return recipeData;
+
+}; 
+
+const getBDById = async (id) =>{
+    const recipe = await Recipe.findByPk(id, {include: Diet});
+    return recipe ? recipe: null;
+}
+
+router.get('/recipes:id', async(req, res) =>{
+    try {
+        const {id} = req.params;
+
+        const resultDB = await getBDById(id);
+        const resultApi = await getApiById(id);
+        const results = [...resultDB, ...resultApi];
+        if (results.lenght > 0) {
+            res.status(200).send(results)  
+        } else {
+            res.status(404).send({ msg: "No se encontro la receta" });  
+        }
+    } catch(err) {
+        console.log(err)
+        return [];
+    }
+        
+    
+})
 
 
 

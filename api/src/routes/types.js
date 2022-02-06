@@ -1,11 +1,7 @@
 const { Router } = require("express");
 const { Diet } = require("../db.js");
 
-
-
 const router = Router();
-
-
 
 const getTypes = async () =>{
     const types = await Diet.findAll();

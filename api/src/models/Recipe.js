@@ -27,6 +27,6 @@ module.exports = (sequelize) => {
     stepByStep: {
       type: DataTypes.TEXT,
     }
-
+ 
   });
 };
