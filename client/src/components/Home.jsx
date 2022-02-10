@@ -28,19 +28,19 @@ export default function Home(){
                 Volver a cargar las recetas
                 </button>
                 <div>
-                    <select>
+                     <select>
                         <option value ='alf'>Alfabeticamente</option>
                         <option value ='aaz'>A a Z</option>
                         <option value ='zaa'>Z a A</option>
-                    </select>
+                    </select> 
                 <select>
-                    <opcion value = 'punt'>Puntuacion</opcion>
-                    <opcion value = 'asc'>Ascendente</opcion>
-                    <opcion value = 'desc'>Desedente</opcion>
+                    <option value = 'punt'>Puntuacion</option>
+                    <option value = 'asc'>Ascendente</option>
+                    <option value = 'desc'>Desedente</option>
                     
                 </select>
                 <select>
-                    <opcion value ='diet'>Tipos de dietas</opcion>
+                    <option value ='diet'>Tipos de dietas</option>
                     <option value="gluten free">Gluten Free</option>
                     <option value="ketogenic">Keto</option>
                     <option value="vegetarian">Vegetarian</option>
@@ -63,12 +63,12 @@ export default function Home(){
                             <Fragment>
                             <Link to={'/home/' + r.id} >
                             <Card
-                            id={r.id}
+                            key={r.id}
                             name={r.name}
                             img={r.img}
                             type={r.type}
                             diets={r.diets}
-                             healthScore={r.score}/>
+                            healthScore={r.score}/>
                         </Link>
                         </Fragment>
                         )
