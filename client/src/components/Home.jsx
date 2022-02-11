@@ -4,11 +4,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { getRecipes} from "../actions";
 import { Link } from "react-router-dom";
 import Card from "./Card";
+import Paginado from "./Paginado";
 
 
 export default function Home(){
     const dispatch = useDispatch(); //con esta const voy despachando mis acciones
     const allrecipes = useSelector((state) => state.recipes)//con uS traeme en una const todo lo que esta en state.recip
+    const[ currentPage, setCurrentPage] = useState(1); //la pagina arranca en 1-variable local paginacion
+    const [ recipesPerPage, serRecipesPerPage] = useState(9);//personajes x pagina
+    const indexOfLastRecipe = currentPage * recipesPerPage; //9 1x9
+    const indexOfFirstRecipe = indexOfLastRecipe - recipesPerPage; //9-9=0
+    const currenteRecipes = allrecipes.slice(indexOfFirstRecipe, indexOfLastRecipe);//arreglo desde hasta
+
+    const paginado = (numberPage) =>{   //nos ayuda al renderizado
+        setCurrentPage(numberPage)
+    }
 
 
     useEffect(() => {
@@ -57,8 +67,13 @@ export default function Home(){
                 
 
                 </select>
+                <Paginado
+                recipesPerPage={recipesPerPage}
+                allrecipes={allrecipes.length}
+                paginado ={paginado}
+                />
                 {
-                    allrecipes ?.map(r =>{
+                    currenteRecipes?.map(r=>{
                         return(
                             <Fragment>
                             <Link to={'/home/' + r.id} >
